@@ -76,5 +76,7 @@ export const useZoom = (svgRef, height, width) => {
 export const usePanAndZoom = (svgRef, height, width) => {
   const {zoom} = useZoom(svgRef, height, width)
   const {pan} = usePan(svgRef)
+  pan.x = pan.x * zoom
+  pan.y = pan.y * zoom
   return {pan, zoom}
 }
