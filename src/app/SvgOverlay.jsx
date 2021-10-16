@@ -17,7 +17,7 @@ const nextColor = () => {
 
 const RoundedRect = ({x, y, height, width, color = nextColor()}) => {
   return <rect x={x} y={y} width={width} height={height} stroke={color}
-    fill="none" strokeWidth="3" rx="8" />
+    fill="none" strokeWidth="6" rx="8" />
 }
 
 export const SvgOverlay = () => {
