@@ -17,6 +17,7 @@ export const usePanAndZoom = (svgRef) => {
     let panX = 0
     let panY = 0
     let zoom = 1
+    let isPanning = false
     const updateViewbox = () => setViewBoxString(createViewBoxString(height, width, panX, panY, zoom))
     updateViewbox()
 
@@ -28,6 +29,7 @@ export const usePanAndZoom = (svgRef) => {
     }
 
     const onZoom = (e) => {
+      if (isPanning) { return }
       const cx = panX + zoom * width / 2
       const cy = panY + zoom * height / 2
 
@@ -49,17 +51,39 @@ export const usePanAndZoom = (svgRef) => {
       e.preventDefault()
     }
 
+    let dragStartX, dragStartY
+    const onPanDrag = (e) => {
+      const diffX = dragStartX - e.clientX
+      const diffY = dragStartY - e.clientY
+      panX += diffX * zoom
+      panY += diffY * zoom
+      dragStartX = e.clientX
+      dragStartY = e.clientY
+      updateViewbox()
+    }
+    const onPanEnd = () => {
+      isPanning = false
+      window.removeEventListener('mouseup', onPanEnd)
+      window.removeEventListener('mousemove', onPanDrag)
+    }
     const onPanStart = (e) => {
-      console.log("clicked!", e)
+      isPanning = true
+      dragStartX = e.clientX
+      dragStartY = e.clientY
+      window.addEventListener('mouseup', onPanEnd)
+      window.addEventListener('mousemove', onPanDrag)
+      e.preventDefault()
     }
 
     window.addEventListener('resize', onResize)
     svg.addEventListener('wheel', onZoom)
     svg.addEventListener('mousedown', onPanStart)
-    return () => {
+    return () => { // cleanup function
       window.removeEventListener('resize', onResize)
       svg.removeEventListener('wheel', onZoom)
       svg.removeEventListener('mousedown', onPanStart)
+      window.removeEventListener('mouseup', onPanEnd)
+      window.removeEventListener('mousemove', onPanDrag)
     }
   }, [svgRef])
 
