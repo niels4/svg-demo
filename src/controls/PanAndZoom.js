@@ -1,15 +1,60 @@
 import {useState, useEffect} from 'react'
 
-const ZOOM_SPEED = 20
+const ZOOM_SPEED = 0.1
+const MAX_ZOOM_IN = 0.2
+const MAX_ZOOM_OUT = 20
 
-export const usePanAndZoom = (svgRef, height, width) => {
+export const usePan = (svgRef) => {
+  const [pan, setPan] = useState({x: 0, y: 0})
+  let currentPan = pan
+  const panStart = {x: pan.x, y: pan.y}
+  const panMouseStart = {x: 0, y: 0}
+
+  const onPanDrag = (e) => {
+    const diffX = panMouseStart.x - e.clientX
+    const diffY = panMouseStart.y - e.clientY
+    currentPan = {x: panStart.x + diffX, y: panStart.y + diffY}
+    setPan(currentPan)
+    e.preventDefault()
+  }
+
+  useEffect(() => {
+    const svg = svgRef.current
+    if (!svg) { return }
+
+    const onPanStart = (e) => {
+      panMouseStart.x = e.clientX
+      panMouseStart.y = e.clientY
+      panStart.x = currentPan.x
+      panStart.y = currentPan.y
+      window.addEventListener('mouseup', onPanEnd)
+      window.addEventListener('mousemove', onPanDrag)
+      e.preventDefault()
+    }
+    const onPanEnd = (e) => {
+      window.removeEventListener('mousemove', onPanDrag)
+      e.preventDefault()
+    }
+    svg.addEventListener('mousedown', onPanStart)
+    return () => {
+      svg.removeEventListener('mousedown', onPanStart)
+      window.removeEventListener('mouseup', onPanEnd)
+      window.removeEventListener('mousemove', onPanDrag)
+    }
+  }, [svgRef])
+
+  return {pan}
+}
+
+export const useZoom = (svgRef, height, width) => {
   const [zoom, setZoom] = useState(1)
-  const minZoom = Math.min(height, width) * -1 + 0.1
   let totalDeltaY = 0
   const onZoom = (e) => {
-    const nextZoom = ZOOM_SPEED * (totalDeltaY + e.deltaY)
-    if (nextZoom < minZoom) {
-      setZoom(minZoom)
+    const nextZoom = 1 + ZOOM_SPEED * (totalDeltaY + e.deltaY)
+    if (nextZoom > MAX_ZOOM_OUT) {
+      setZoom(MAX_ZOOM_OUT)
+    } else if (nextZoom < MAX_ZOOM_IN) {
+      setZoom(MAX_ZOOM_IN)
     } else {
       totalDeltaY += e.deltaY
       setZoom(nextZoom)
@@ -18,11 +63,18 @@ export const usePanAndZoom = (svgRef, height, width) => {
   }
   useEffect(() => {
     const svg = svgRef.current
-    svg && svg.addEventListener('wheel', onZoom)
+    if (!svg) { return }
+    svg.addEventListener('wheel', onZoom)
     return () => {
-      svg && svg.removeEventListener('wheel', onZoom)
+      svg.removeEventListener('wheel', onZoom)
     }
   }, [svgRef, height, width])
 
   return {zoom}
+}
+
+export const usePanAndZoom = (svgRef, height, width) => {
+  const {zoom} = useZoom(svgRef, height, width)
+  const {pan} = usePan(svgRef)
+  return {pan, zoom}
 }

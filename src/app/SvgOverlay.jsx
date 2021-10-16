@@ -21,15 +21,15 @@ const RoundedRect = ({x, y, height, width, color = nextColor()}) => {
     fill="none" strokeWidth="3" rx="8" />
 }
 
-const viewBoxString = (height, width, zoom) => `${0} ${0} ${width + zoom} ${height + zoom}`
+const viewBoxString = (height, width, pan, zoom) => `${pan.x * zoom} ${pan.y * zoom} ${width * zoom} ${height * zoom}`
 
 export const SvgOverlay = () => {
   const svgRef = useRef()
   const {height, width} = useWindowSize()
-  const {zoom} = usePanAndZoom(svgRef, height, width)
+  const {pan, zoom} = usePanAndZoom(svgRef, height, width)
   useEffect(() => { nextColorIndex = -1 })
 
-  return <svg className='svg_overlay' ref={svgRef} viewBox={viewBoxString(height, width, zoom)} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  return <svg className='svg_overlay' ref={svgRef} viewBox={viewBoxString(height, width, pan, zoom)} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
     <RoundedRect x={120} y={100} height={200} width={100} />
     <RoundedRect x={120} y={400} height={200} width={800} />
     <RoundedRect x={420} y={50} height={300} width={500} />
