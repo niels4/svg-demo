@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="importmap">
+      {
+        "imports": {
+          "src/": "/",
+          "react": "/_snowpack/pkg/react.v17.0.2.js"
+        }
+      }
+    </script>
+    <script>
+      window.addEventListener('error', function(e){
+        // prevent React's listener from firing
+        e.stopImmediatePropagation()
+        // prevent the browser's console error message 
+        e.preventDefault()
+      })
+    </script>
+    <script type="module" src="/index.js" defer />
+  </head>
+<body>
+  <div id="app_root"></div>
+</body>
+</html>

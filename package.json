@@ -1,0 +1,30 @@
+{
+  "name": "svg-demo",
+  "version": "1.0.0",
+  "description": "Example svg interface with pan and zoom",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "snowpack dev",
+    "lint": "eslint 'src/**/*.js{x,}'",
+    "build": "snowpack build"
+  },
+  "author": "niels",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/standalone": "^7.15.8",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "snowpack": "^3.8.8"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-config-standard-jsx": "^10.0.0",
+    "eslint-config-standard-react": "^11.0.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-react": "^7.23.2"
+  }
+}
