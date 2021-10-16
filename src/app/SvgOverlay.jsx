@@ -1,5 +1,4 @@
 import React, {useRef, useEffect} from 'react'
-import {useWindowSize} from 'src/data/clientData.js'
 import {usePanAndZoom} from 'src/controls/PanAndZoom.js'
 
 const colors = [
@@ -21,15 +20,12 @@ const RoundedRect = ({x, y, height, width, color = nextColor()}) => {
     fill="none" strokeWidth="3" rx="8" />
 }
 
-const viewBoxString = (height, width, pan, zoom) => `${parseInt(pan.x * zoom)} ${parseInt(pan.y * zoom)} ${parseInt(width * zoom)} ${parseInt(height * zoom)}`
-
 export const SvgOverlay = () => {
   const svgRef = useRef()
-  const {height, width} = useWindowSize()
-  const {pan, zoom} = usePanAndZoom(svgRef, height, width)
+  const viewBoxString = usePanAndZoom(svgRef)
   useEffect(() => { nextColorIndex = -1 })
 
-  return <svg className='svg_overlay' ref={svgRef} viewBox={viewBoxString(height, width, pan, zoom)} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  return <svg className='svg_overlay' ref={svgRef} viewBox={viewBoxString} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
     <RoundedRect x={120} y={100} height={200} width={100} />
     <RoundedRect x={120} y={400} height={200} width={800} />
     <RoundedRect x={420} y={50} height={300} width={500} />
