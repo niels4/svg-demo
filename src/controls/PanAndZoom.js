@@ -65,8 +65,22 @@ export const useZoom = (svgRef, height, width) => {
     const svg = svgRef.current
     if (!svg) { return }
     svg.addEventListener('wheel', onZoom)
+
+    // disable zoom when mouse button is pressed
+    const onMouseUp = () => {
+      svg.addEventListener('wheel', onZoom)
+      window.removeEventListener('mouseup', onMouseUp)
+    }
+    const onMouseDown = () => {
+      svg.removeEventListener('wheel', onZoom)
+      window.addEventListener('mouseup', onMouseUp)
+    }
+    window.addEventListener('mousedown', onMouseDown)
+
     return () => {
       svg.removeEventListener('wheel', onZoom)
+      window.removeEventListener('mousedown', onMouseDown)
+      window.removeEventListener('mouseup', onMouseUp)
     }
   }, [svgRef, height, width])
 
@@ -76,7 +90,5 @@ export const useZoom = (svgRef, height, width) => {
 export const usePanAndZoom = (svgRef, height, width) => {
   const {zoom} = useZoom(svgRef, height, width)
   const {pan} = usePan(svgRef)
-  pan.x = pan.x * zoom
-  pan.y = pan.y * zoom
   return {pan, zoom}
 }

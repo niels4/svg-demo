@@ -21,7 +21,7 @@ const RoundedRect = ({x, y, height, width, color = nextColor()}) => {
     fill="none" strokeWidth="3" rx="8" />
 }
 
-const viewBoxString = (height, width, pan, zoom) => `${pan.x} ${pan.y} ${width * zoom} ${height * zoom}`
+const viewBoxString = (height, width, pan, zoom) => `${parseInt(pan.x * zoom)} ${parseInt(pan.y * zoom)} ${parseInt(width * zoom)} ${parseInt(height * zoom)}`
 
 export const SvgOverlay = () => {
   const svgRef = useRef()
