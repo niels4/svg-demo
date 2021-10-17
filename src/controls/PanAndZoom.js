@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react'
+import {animateZoomTo} from './animateZoomTo.js'
 
 const ZOOM_SPEED = 0.1
 const MAX_ZOOM_IN = 1
@@ -79,16 +80,22 @@ export const usePanAndZoom = (svgRef, initialZoom = {}) => {
     // using state to store the zoomTo function to make sure it is run in the same context as
     // the rest of the pan and zoom controls
     setZoomTo(() => ({x, y, height, width}, buffer = 0) => {
-      panX = x - buffer
-      panY = y - buffer
+      const endPanX = x - buffer
+      const endPanY = y - buffer
       const heightRatio = height / svgHeight
       const widthRatio = width / svgWidth
+      let endZoom
       if (widthRatio > heightRatio) {
-        zoom = (width + 2 * buffer) / svgWidth
+        endZoom = (width + 2 * buffer) / svgWidth
       } else {
-        zoom = (height + 2 * buffer) / svgHeight
+        endZoom = (height + 2 * buffer) / svgHeight
       }
-      updateViewbox()
+      animateZoomTo(panX, panY, zoom, endPanX, endPanY, endZoom, (newPanX, newPanY, newZoom) => {
+        panX = newPanX
+        panY = newPanY
+        zoom = newZoom
+        updateViewbox()
+      })
     })
 
     window.addEventListener('resize', onResize)
