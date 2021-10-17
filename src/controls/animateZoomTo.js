@@ -14,9 +14,9 @@ export const animateZoomTo = (sPanX, sPanY, sZoom, ePanX, ePanY, eZoom, update) 
     }
     window.requestAnimationFrame(animate)
     const percentComplete = (now - start) / DURATION
-    const newPanX = sPanX + percentComplete * diffPanX
-    const newPanY = sPanY + percentComplete * diffPanY
-    const newZoom = sZoom + percentComplete * diffZoom
+    const newPanX = sPanX + Math.sin(percentComplete * Math.PI / 2) * diffPanX
+    const newPanY = sPanY + Math.sin(percentComplete * Math.PI / 2) * diffPanY
+    const newZoom = sZoom + Math.sin(percentComplete * Math.PI / 2) * diffZoom
     update(newPanX, newPanY, newZoom)
   }
   animate()
