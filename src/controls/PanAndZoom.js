@@ -7,7 +7,7 @@ const MAX_ZOOM_OUT = 20
 const createViewBoxString = (height, width, panX = 0, panY = 0, zoom = 1) =>
   `${panX} ${panY} ${width * zoom} ${height * zoom}`
 
-export const usePanAndZoom = (svgRef) => {
+export const usePanAndZoom = (svgRef, initialZoom = {}) => {
   const [viewBoxString, setViewBoxString] = useState("0 0 1 1")
   const [zoomTo, setZoomTo] = useState(() => {})
 
@@ -16,9 +16,9 @@ export const usePanAndZoom = (svgRef) => {
     if (!svg) { return }
     let svgHeight = 1
     let svgWidth = 1
-    let panX = 0
-    let panY = 0
-    let zoom = 1
+    let panX = initialZoom.panX || 0
+    let panY = initialZoom.panY || 0
+    let zoom = initialZoom.zoom || 1
     let isPanning = false
     const updateViewbox = () => setViewBoxString(createViewBoxString(svgHeight, svgWidth, panX, panY, zoom))
     onResize()
