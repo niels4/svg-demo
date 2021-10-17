@@ -1,7 +1,7 @@
 import React, {useRef, useEffect} from 'react'
 import {usePanAndZoom} from 'src/controls/PanAndZoom.js'
 import {nextColor, resetColorIndex} from 'src/themes/default.js'
-import {Sections} from 'src/app/Sections.js'
+import {Sections} from 'src/app/svg-canvas/Sections.js'
 
 const sectionData = [
   {name: "A", x: -30, y: -30, width: 3000, height: 2500},
@@ -15,14 +15,14 @@ const RoundedRect = ({x, y, height, width, color = nextColor()}) => {
     fill="none" strokeWidth="6" rx="8" />
 }
 
-export const SvgOverlay = () => {
+export const SvgCanvas = () => {
   const svgRef = useRef()
   const {viewBoxString, zoomTo} = usePanAndZoom(svgRef)
   useEffect(resetColorIndex)
 
   window.zoomToSection = (i) => zoomTo(sectionData[i], 50)
 
-  return <svg className='svg_overlay' ref={svgRef} viewBox={viewBoxString} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  return <svg className='svg_canvas' ref={svgRef} viewBox={viewBoxString} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
     <RoundedRect x={120} y={100} height={200} width={100} />
     <RoundedRect x={120} y={400} height={200} width={800} />
     <RoundedRect x={420} y={50} height={300} width={500} />

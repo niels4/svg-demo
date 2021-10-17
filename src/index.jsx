@@ -6,9 +6,13 @@ import './global.css'
 const rootElement = document.getElementById('app_root')
 
 const LiveApp = () => {
-  const {SvgOverlay} = useLiveImport('src/app/SvgOverlay.jsx')
-  if (!SvgOverlay) { return "loading..." }
-  return <SvgOverlay />
+  const {SvgCanvas} = useLiveImport('src/app/svg-canvas/SvgCanvas.jsx')
+  const {HtmlOverlay} = useLiveImport('src/app/ui-controls/HtmlOverlay.jsx')
+  if (!SvgCanvas || !HtmlOverlay) { return "loading..." }
+  return <>
+    <SvgCanvas />
+    <HtmlOverlay />
+  </>
 }
 
 class App extends React.Component {
