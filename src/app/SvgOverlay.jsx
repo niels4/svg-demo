@@ -20,7 +20,7 @@ export const SvgOverlay = () => {
   const {viewBoxString, zoomTo} = usePanAndZoom(svgRef)
   useEffect(resetColorIndex)
 
-  window.zoomTo = zoomTo
+  window.zoomToSection = (i) => zoomTo(sectionData[i], 50)
 
   return <svg className='svg_overlay' ref={svgRef} viewBox={viewBoxString} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
     <RoundedRect x={120} y={100} height={200} width={100} />
