@@ -9,29 +9,31 @@ const createViewBoxString = (height, width, panX = 0, panY = 0, zoom = 1) =>
 
 export const usePanAndZoom = (svgRef) => {
   const [viewBoxString, setViewBoxString] = useState("0 0 1 1")
+  const [zoomTo, setZoomTo] = useState(() => {})
 
   useEffect(() => {
     const svg = svgRef.current
     if (!svg) { return }
-    let {height, width} = svg.getBoundingClientRect()
+    let svgHeight = 1
+    let svgWidth = 1
     let panX = 0
     let panY = 0
     let zoom = 1
     let isPanning = false
-    const updateViewbox = () => setViewBoxString(createViewBoxString(height, width, panX, panY, zoom))
-    updateViewbox()
+    const updateViewbox = () => setViewBoxString(createViewBoxString(svgHeight, svgWidth, panX, panY, zoom))
+    onResize()
 
-    const onResize = () => {
+    function onResize () {
       const svgRect = svg.getBoundingClientRect()
-      height = svgRect.height
-      width = svgRect.width
+      svgHeight = svgRect.height
+      svgWidth = svgRect.width
       updateViewbox()
     }
 
     const onZoom = (e) => {
       if (isPanning) { return }
-      const cx = panX + zoom * width / 2
-      const cy = panY + zoom * height / 2
+      const cx = panX + zoom * svgWidth / 2
+      const cy = panY + zoom * svgHeight / 2
 
       zoom += ZOOM_SPEED * e.deltaY
       if (zoom > MAX_ZOOM_OUT) {
@@ -41,13 +43,12 @@ export const usePanAndZoom = (svgRef) => {
       }
 
       // maintain center as we zoom in and out
-      const newCx = panX + zoom * width / 2
-      const newCy = panY + zoom * height / 2
+      const newCx = panX + zoom * svgWidth / 2
+      const newCy = panY + zoom * svgHeight / 2
       panX += (cx - newCx)
       panY += (cy - newCy)
 
       updateViewbox()
-
       e.preventDefault()
     }
 
@@ -75,6 +76,13 @@ export const usePanAndZoom = (svgRef) => {
       e.preventDefault()
     }
 
+    setZoomTo(() => ({x, y, height, width, buffer = 0}) => {
+      panX = x - buffer
+      panY = y - buffer
+      zoom = (width + 4 * buffer) / svgWidth
+      updateViewbox()
+    })
+
     window.addEventListener('resize', onResize)
     svg.addEventListener('wheel', onZoom)
     svg.addEventListener('mousedown', onPanStart)
@@ -87,5 +95,5 @@ export const usePanAndZoom = (svgRef) => {
     }
   }, [svgRef])
 
-  return viewBoxString
+  return {viewBoxString, zoomTo}
 }
