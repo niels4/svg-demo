@@ -1,7 +1,9 @@
 import React from 'react'
+import {sectionData} from 'src/data/sectionData.js'
+import {SectionNavigator} from './SectionNavigator.js'
 
-export const HtmlOverlay = () => {
+export const HtmlOverlay = ({zoomTo}) => {
   return <div className="html_overlay">
-    <h1>HTML OVERLAY</h1>
+    <SectionNavigator sectionData={sectionData} zoomTo={zoomTo} />
   </div>
 }

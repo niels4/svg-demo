@@ -7,11 +7,9 @@ const rootElement = document.getElementById('app_root')
 
 const LiveApp = () => {
   const {SvgCanvas} = useLiveImport('src/app/svg-canvas/SvgCanvas.jsx')
-  const {HtmlOverlay} = useLiveImport('src/app/ui-controls/HtmlOverlay.jsx')
-  if (!SvgCanvas || !HtmlOverlay) { return "loading..." }
+  if (!SvgCanvas) { return "loading..." }
   return <>
     <SvgCanvas />
-    <HtmlOverlay />
   </>
 }
 

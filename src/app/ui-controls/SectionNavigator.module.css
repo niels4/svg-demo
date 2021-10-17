@@ -1,0 +1,29 @@
+.section_navigator {
+  display: inline-block;
+  background: #333;
+  position: absolute;
+  top: 10px;
+  left: 100px;
+  padding: 10px;
+  border-radius: 50px;
+  border: 1px solid #61f3df;
+  color: #61f3df;
+  pointer-events: all;
+}
+
+.title {
+  margin-right: 5px;
+}
+
+.section_button {
+  border: 1px solid #61f3df;
+  border-radius: 20px;
+  padding: 5px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.section_button:hover {
+  background: #444444;
+}
