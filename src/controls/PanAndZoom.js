@@ -76,10 +76,16 @@ export const usePanAndZoom = (svgRef, initialZoom = {}) => {
       e.preventDefault()
     }
 
-    setZoomTo(() => ({x, y, height, width, buffer = 0}) => {
+    setZoomTo(() => ({x, y, height, width}, buffer = 0) => {
       panX = x - buffer
       panY = y - buffer
-      zoom = (width + 4 * buffer) / svgWidth
+      const heightRatio = height / svgHeight
+      const widthRatio = width / svgWidth
+      if (widthRatio > heightRatio) {
+        zoom = (width + 2 * buffer) / svgWidth
+      } else {
+        zoom = (height + 2 * buffer) / svgHeight
+      }
       updateViewbox()
     })
 
