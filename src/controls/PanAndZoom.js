@@ -76,6 +76,8 @@ export const usePanAndZoom = (svgRef, initialZoom = {}) => {
       e.preventDefault()
     }
 
+    // using state to store the zoomTo function to make sure it is run in the same context as
+    // the rest of the pan and zoom controls
     setZoomTo(() => ({x, y, height, width}, buffer = 0) => {
       panX = x - buffer
       panY = y - buffer
