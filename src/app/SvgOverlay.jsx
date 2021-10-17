@@ -1,19 +1,11 @@
 import React, {useRef, useEffect} from 'react'
 import {usePanAndZoom} from 'src/controls/PanAndZoom.js'
+import {nextColor, resetColorIndex} from 'src/themes/default.js'
+import {Sections} from 'src/app/Sections.js'
 
-const colors = [
-  '#f00',
-  '#ff0',
-  '#55f',
-  '#0f0',
-  '#0ff'
+const sectionData = [
+  {name: "A-1", x: 30, y: 30, width: 1000, height: 610}
 ]
-let nextColorIndex = -1
-const nextColor = () => {
-  if (nextColorIndex >= colors.length - 1) { nextColorIndex = -1 }
-  nextColorIndex += 1
-  return colors[nextColorIndex]
-}
 
 const RoundedRect = ({x, y, height, width, color = nextColor()}) => {
   return <rect x={x} y={y} width={width} height={height} stroke={color}
@@ -22,8 +14,10 @@ const RoundedRect = ({x, y, height, width, color = nextColor()}) => {
 
 export const SvgOverlay = () => {
   const svgRef = useRef()
-  const viewBoxString = usePanAndZoom(svgRef)
-  useEffect(() => { nextColorIndex = -1 })
+  const {viewBoxString, zoomTo} = usePanAndZoom(svgRef)
+  useEffect(resetColorIndex)
+
+  window.zoomTo = zoomTo
 
   return <svg className='svg_overlay' ref={svgRef} viewBox={viewBoxString} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
     <RoundedRect x={120} y={100} height={200} width={100} />
@@ -39,5 +33,6 @@ export const SvgOverlay = () => {
     <RoundedRect x={8000} y={4500} height={300} width={800} />
     <RoundedRect x={6000} y={4000} height={900} width={800} />
     <RoundedRect x={7200} y={4000} height={200} width={800} />
+    <Sections data={sectionData} />
   </svg>
 }
