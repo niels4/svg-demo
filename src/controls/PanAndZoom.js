@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 import {animateZoomTo} from './animateZoomTo.js'
 
-const ZOOM_SPEED = 0.1
+const ZOOM_SPEED = 0.02
 const MAX_ZOOM_IN = 1
 const MAX_ZOOM_OUT = 20
 
