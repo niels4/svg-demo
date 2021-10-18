@@ -1,4 +1,5 @@
 .section_navigator {
+  --main-color: #61f3df;
   display: inline-block;
   background: #333;
   position: absolute;
@@ -6,8 +7,8 @@
   left: 100px;
   padding: 10px;
   border-radius: 50px;
-  border: 1px solid #61f3df;
-  color: #61f3df;
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
   pointer-events: all;
 }
 
@@ -16,7 +17,7 @@
 }
 
 .section_button {
-  border: 1px solid #61f3df;
+  border: 1px solid var(--main-color);
   border-radius: 20px;
   padding: 5px;
   margin: 0 5px;
