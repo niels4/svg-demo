@@ -3,7 +3,7 @@ import {usePanAndZoom} from 'src/controls/PanAndZoom.js'
 import {nextColor, resetColorIndex} from 'src/themes/default.js'
 import {Sections} from 'src/app/svg-canvas/Sections.js'
 import {sectionData} from 'src/data/sectionData.js'
-import {HtmlOverlay} from 'src/app/ui-controls/HtmlOverlay.jsx'
+import {HtmlOverlay} from 'src/app/ui-controls/HtmlOverlay.js'
 
 const RoundedRect = ({x, y, height, width, color = nextColor()}) => {
   return <rect x={x} y={y} width={width} height={height} stroke={color}
