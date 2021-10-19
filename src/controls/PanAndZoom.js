@@ -69,6 +69,7 @@ export const usePanAndZoom = (svgRef, initialZoom = {}) => {
       window.removeEventListener('mousemove', onPanDrag)
     }
     const onPanStart = (e) => {
+      if (e.target !== svg) { return }
       isPanning = true
       dragStartX = e.clientX
       dragStartY = e.clientY
