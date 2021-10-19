@@ -2,8 +2,8 @@ import React, {useRef, useEffect} from 'react'
 import {usePanAndZoom} from 'src/controls/PanAndZoom.js'
 import {nextColor, resetColorIndex} from 'src/themes/default.js'
 import {Sections} from 'src/app/svg-canvas/Sections.js'
-import {sectionData} from 'src/data/sectionData.js'
 import {HtmlOverlay} from 'src/app/ui-controls/HtmlOverlay.js'
+import {useLiveImport} from 'src/data/liveImport.js'
 
 const RoundedRect = ({x, y, height, width, color = nextColor()}) => {
   return <rect x={x} y={y} width={width} height={height} stroke={color}
@@ -14,6 +14,7 @@ export const SvgCanvas = () => {
   const svgRef = useRef()
   const {viewBoxString, zoomTo} = usePanAndZoom(svgRef)
   useEffect(resetColorIndex)
+  const {sectionData} = useLiveImport('src/data/sectionData.js')
 
   return <>
     <svg className='svg_canvas' ref={svgRef} viewBox={viewBoxString} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
