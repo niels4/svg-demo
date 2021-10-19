@@ -6,5 +6,5 @@ export const Section = ({x, y, height, width, name}) => <g>
   <text x={x + 10} y={y + 25} fontSize="22" fill="#bbb" fontFamily="maven-bold">{name}</text>
 </g>
 
-export const Sections = ({data}) => data.map(({x, y, height, width, name}) => <Section
+export const Sections = ({data}) => !data ? null : data.map(({x, y, height, width, name}) => <Section
   key={name} x={x} y={y} height={height} width={width} name={name} />)
